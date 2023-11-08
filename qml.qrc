@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>ImpGauge.qml</file>
+        <file>InputIndicator.qml</file>
+        <file>Marker.qml</file>
+        <file>GaugeCaption.qml</file>
+        <file>1kHz_44100Hz_16bit_05sec.wav</file>
+        <file>icons8-journal-80.png</file>
+    </qresource>
+</RCC>

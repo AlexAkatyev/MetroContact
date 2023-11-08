@@ -1,0 +1,66 @@
+#ifndef METROCONTACT_H
+#define METROCONTACT_H
+
+#include <QObject>
+
+#include "measurement/meassystemsfinder.h"
+
+class IniSettings;
+class QFile;
+
+struct Measure
+{
+  int picket = 0;
+  bool direct = false;
+  float length = 0;
+  float vert = 0;
+  float horiz = 0;
+  Measure(int p, bool d, float l, float v, float h)
+  {
+    picket = p;
+    direct = d;
+    length = l;
+    vert = v;
+    horiz = h;
+  }
+};
+
+class MetroContact : public QObject
+{
+  Q_OBJECT
+public:
+  explicit MetroContact(QObject *parent = nullptr);
+
+  Q_INVOKABLE double currentV() const;
+  Q_INVOKABLE double currentH() const;
+  Q_INVOKABLE int currentS() const;
+
+public slots:
+  void saveProtocol(QString urlName);
+  void saveMeasure(int picket, bool direction, float length, float v, float h);
+
+private:
+  void measFind();
+  void measPick();
+  void saveProtokolHeader(QFile* file);
+  void saveProtokolRecord(QFile* file, Measure measure);
+  void indicateCurrentMeas(std::vector<QVariant> meas);
+
+  IniSettings* _settings;
+
+  MeasSystemsFinder* _finder;
+  MeasSystem* _measurement;
+
+  std::vector<Measure> _protokol;
+  QFile* _cachFile;
+
+  double _currentV;
+  double _currentH;
+  unsigned int _currentS;
+
+
+  void testReadMeas();
+
+};
+
+#endif // METROCONTACT_H
