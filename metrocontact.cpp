@@ -113,7 +113,7 @@ void MetroContact::saveProtokolRecord(QFile* file, Measure measure)
   file->write(QString::number(measure.picket).toLatin1()
               + (measure.direct ? "+" : "-")
               + ";"
-              + QString::number(measure.length, 'f', 3).toLatin1()
+              + QString::number(measure.length, 'f', 2).toLatin1()
               + ";"
               + QString::number(measure.vert, 'f', 3).toLatin1()
               + ";"
