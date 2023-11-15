@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick 2.14
+import QtQuick.Window 2.14
+import QtQuick.Controls 2.14
+import QtQuick.Layouts 1.14
 import QtMultimedia 5.5
 import QtQuick.Dialogs 1.2
 
@@ -15,7 +15,7 @@ Window {
     width: 1500//(2500 < Screen.desktopAvailableWidth) ? 1500 : Screen.desktopAvailableWidth
     height: 1000//Screen.desktopAvailableHeight
     visible: true
-    title: "Катучий шаблон М-009 v1.1"
+    title: "Катучий шаблон М-009 v1.2"
 
     onSceneGraphInitialized: showMaximized();
 
@@ -272,6 +272,7 @@ Window {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
+                anchors.bottomMargin: 10
                 height: getPicketHeigth()
                 enabled: measuring
                 Text {
@@ -279,16 +280,14 @@ Window {
                     anchors.left: parent.left
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    anchors.margins: 5
-                    text: "Расстояние:"
-                    font.pixelSize: getPicketHeigth() / 2
+                    text: "S:"
+                    font.pixelSize: parent.height - 2
                 }
                 Text {
                     id: tLength
                     anchors.left: tLabel.right
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    anchors.margins: tLabel.anchors.margins
                     text: getLengthDisplay()
                     font.pixelSize: tLabel.font.pixelSize
                 }
@@ -311,7 +310,7 @@ Window {
                     anchors.right: btPicket.left
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    anchors.rightMargin: tLabel.anchors.margins
+                    anchors.rightMargin: 5
                     font.pixelSize: pause ? tLabel.font.pixelSize/2.25 : tLabel.font.pixelSize
                     text: pause ? "ПРОДОЛЖИТЬ" : "ПАУЗА"
                     onClicked: pause = !pause
@@ -458,8 +457,6 @@ Window {
                 anchors.fill: parent
                 clip: true
                 TextArea {
-                    anchors.fill: parent
-                    anchors.margins: 20
                     readOnly: true
                     text:
 "
