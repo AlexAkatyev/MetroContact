@@ -7,22 +7,35 @@
 
 #include "metrocontact.h"
 #include "inisettings.h"
+#include "Logger/logger.h"
 
-QString CACH_FILE = "cachMetroContact.csv";
 int IVERT = 0;
 int IHOR = 1;
 int ISTEP = 2;
 
 
+QString measureToString(Measure measure)
+{
+  return QString::number(measure.picket).toLatin1()
+         + (measure.direct ? "+" : "-")
+         + ";"
+         + QString::number(measure.length, 'f', 2).toLatin1()
+         + ";"
+         + QString::number(measure.vert, 'f', 3).toLatin1()
+         + ";"
+         + QString::number(measure.horiz, 'f', 3).toLatin1()
+         + ";";
+}
+
 MetroContact::MetroContact(QObject *parent) : QObject(parent)
   , _settings(new IniSettings(this))
   , _finder(new MeasSystemsFinder(this))
   , _measurement(nullptr)
-  , _cachFile(new QFile(CACH_FILE, this))
   , _currentV(0)
   , _currentH(0)
   , _currentS(0)
 {
+  Logger::GetInstance(this)->WriteLnLog("Запуск программы MetroContact");
   _protokol.clear();
   connect(_finder,
           &MeasSystemsFinder::Ready,
@@ -64,7 +77,6 @@ void MetroContact::saveProtocol(QString urlName)
   if (fileName.isEmpty())
     return;
 
-  _cachFile->close();
   QFile protokol(fileName, this);
 
   protokol.open(QIODevice::WriteOnly);
@@ -74,7 +86,6 @@ void MetroContact::saveProtocol(QString urlName)
   protokol.close();
 
   _protokol.clear();
-  QFile::remove(CACH_FILE);
 }
 
 
@@ -87,13 +98,8 @@ void MetroContact::saveMeasure(int picket, bool direction, float length, float v
       && len < 0.15)
   {
     _protokol.push_back(Measure(picket, direction, rLen, v, h));
-    if (!_cachFile->isOpen())
-    {
-      _cachFile->open(QIODevice::WriteOnly);
-      saveProtokolHeader(_cachFile);
-    }
-    saveProtokolRecord(_cachFile, *(--_protokol.end()));
-    _cachFile->flush();
+    Logger::GetInstance()->SetTimeLabel();
+    Logger::GetInstance()->WriteLnLog(measureToString(*(--_protokol.end())));
   }
   prevlen = rLen;
 }
@@ -110,14 +116,7 @@ void MetroContact::saveProtokolHeader(QFile* file)
 
 void MetroContact::saveProtokolRecord(QFile* file, Measure measure)
 {
-  file->write(QString::number(measure.picket).toLatin1()
-              + (measure.direct ? "+" : "-")
-              + ";"
-              + QString::number(measure.length, 'f', 2).toLatin1()
-              + ";"
-              + QString::number(measure.vert, 'f', 3).toLatin1()
-              + ";"
-              + QString::number(measure.horiz, 'f', 3).toLatin1()
+  file->write(measureToString(measure).toLatin1()
               + ";\n");
 }
 

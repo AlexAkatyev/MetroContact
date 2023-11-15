@@ -7,7 +7,6 @@
 
 class QSerialPort;
 class QByteArray;
-class QFile; // debug !!!!!!!!!!!!!
 
 class MeasSystemsFinder : public QObject
 {
@@ -24,13 +23,11 @@ signals:
 private:
   void startAnalizePort();
   void finishAnalizePort();
-  void recordLog(QString);
 
   QObject* _parent;
   std::vector<MeasSystem*> _measSystems;
   std::map<QString, QSerialPort*> _mapUsbMetroMeasSystem;
   std::map<QString, QSerialPort*>::iterator _itMMS;
-  QFile* _cachFile; // debug !!!!!!!
 };
 
 #endif // MEASSYSTEMSFINDER_H

@@ -211,8 +211,8 @@ Window {
         running: true
         interval: 20
         onTriggered: {
-            inputVertical.mess = mcRoutine.currentV() * 0.01;
-            inputHorizontal.mess = mcRoutine.currentH() * 0.01;
+            inputVertical.mess = mcRoutine.currentV();
+            inputHorizontal.mess = mcRoutine.currentH();
             currentDiscret = mcRoutine.currentS();
         }
     }

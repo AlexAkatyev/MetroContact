@@ -2,18 +2,13 @@
 #include <QSerialPort>
 #include <QTimer>
 
-//debug
-#include <QFile>
-#include <QTextStream>
-//debug
-
 #include "meassystemsfinder.h"
+#include "Logger/logger.h"
 
 
 MeasSystemsFinder::MeasSystemsFinder(QObject *parent)
   : QObject(parent)
   , _parent(parent)
-  , _cachFile(new QFile("finderLog.txt", this))
 {
   _measSystems.clear();
 }
@@ -27,14 +22,14 @@ void MeasSystemsFinder::Find()
   int lenListPort = listPort.size();
   if (lenListPort)
   {
-    recordLog("Список найденных портов:");
+    Logger::GetInstance()->WriteLnLog("Список найденных портов:");
     // UsbMetroMeasSystem
     for (QSerialPortInfo& info : listPort)
     {
       QSerialPort* spTest = new QSerialPort(info, this);
 
       _mapUsbMetroMeasSystem.insert(std::pair<QString, QSerialPort*>(info.portName(), spTest));
-      recordLog(info.portName());
+      Logger::GetInstance()->WriteLnLog(info.portName());
     }
   }
   _itMMS = _mapUsbMetroMeasSystem.begin();
@@ -46,7 +41,7 @@ void MeasSystemsFinder::startAnalizePort()
 {
   if (_itMMS == _mapUsbMetroMeasSystem.end())  // not have used ports
   {
-    recordLog("Поиск устройства окончен");
+    Logger::GetInstance()->WriteLnLog("Поиск устройства окончен");
     emit Ready();
     return;
   }
@@ -54,9 +49,9 @@ void MeasSystemsFinder::startAnalizePort()
   if ((*_itMMS).second->open(QIODevice::ReadWrite)) // ReadOnly
   {
 
-    recordLog("Открываю порт " + (*_itMMS).second->portName());
+    Logger::GetInstance()->WriteLnLog("Открываю порт " + (*_itMMS).second->portName());
     QSerialPort::SerialPortError error = (*_itMMS).second->error();
-    recordLog("Ошибка порта: " + QString::number(error));
+    Logger::GetInstance()->WriteLnLog("Ошибка порта: " + QString::number(error));
 
     (*_itMMS).second->setBaudRate(UsbMetroMeasSystem::BaudRate(), UsbMetroMeasSystem::Direction());
     (*_itMMS).second->setParity(UsbMetroMeasSystem::Parity());
@@ -84,22 +79,21 @@ void MeasSystemsFinder::startAnalizePort()
 
 void MeasSystemsFinder::finishAnalizePort()
 {
-  recordLog("После паузы считываю с порта");
+  Logger::GetInstance()->WriteLnLog("После паузы считываю с порта");
   QByteArray receiveData = (*_itMMS).second->readAll();
   QSerialPort::SerialPortError error = (*_itMMS).second->error();
-  recordLog("Ошибка порта: " + QString::number(error));
-  QString str;
-  str.append(receiveData);
-  recordLog("Считано: " + str);
+  Logger::GetInstance()->WriteLnLog("Ошибка порта: " + QString::number(error));
+  Logger::GetInstance()->WriteLog("Считано: ");
+  Logger::GetInstance()->WriteBytes(receiveData);
   if ((receiveData.size() >= UsbMetroMeasSystem::MessageLength())
       && receiveData.contains(UsbMetroMeasSystem::Header()))
   {
-    recordLog("Устройство найдено: " + (*_itMMS).first);
+    Logger::GetInstance()->WriteLnLog("Устройство найдено: " + (*_itMMS).first);
     UsbMetroMeasSystem* detect = new UsbMetroMeasSystem((*_itMMS).first, _parent);
     _measSystems.push_back(detect);
   }
   else
-    recordLog("Устройство не определено");
+    Logger::GetInstance()->WriteLnLog("Устройство не определено");
   (*_itMMS).second->close();
   (*_itMMS).second->deleteLater();
 
@@ -111,18 +105,5 @@ void MeasSystemsFinder::finishAnalizePort()
 std::vector<MeasSystem*> MeasSystemsFinder::MeasSystems()
 {
   return _measSystems;
-}
-
-
-void MeasSystemsFinder::recordLog(QString record)
-{
-  if (!_cachFile->isOpen())
-  {
-    _cachFile->open(QIODevice::WriteOnly);
-  }
-  QTextStream out(_cachFile);
-  out.setCodec("Windows-1251");
-  out << record << "\n";
-  _cachFile->flush();
 }
 

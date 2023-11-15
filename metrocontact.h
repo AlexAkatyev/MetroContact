@@ -52,7 +52,6 @@ private:
   MeasSystem* _measurement;
 
   std::vector<Measure> _protokol;
-  QFile* _cachFile;
 
   double _currentV;
   double _currentH;

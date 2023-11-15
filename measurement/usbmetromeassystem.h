@@ -6,7 +6,7 @@
 
 #include "meassystem.h"
 
-class QFile; // debug !!!!!!!!!!!!!
+class QTimer;
 
 class UsbMetroMeasSystem : public MeasSystem
 {
@@ -33,10 +33,8 @@ protected:
 private:
   QSerialPortInfo _portInfo;
   QSerialPort* _port;
-
-//  QFile* _cachFile; // debug !!!!!!!
-
-
+  QTimer* _logTimer;
+  bool _saveToLog;
 };
 
 #endif // USBMETROMEASSYSTEM_H
