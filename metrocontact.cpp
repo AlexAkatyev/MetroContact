@@ -42,11 +42,6 @@ MetroContact::MetroContact(QObject *parent) : QObject(parent)
           this,
           &MetroContact::measPick);
   measFind();
-
-//  QTimer* timer = new QTimer(this);
-//  connect(timer, &QTimer::timeout, this, &MetroContact::testReadMeas);
-//  timer->start(50);
-
 }
 
 
@@ -143,20 +138,4 @@ int MetroContact::currentS() const
 {
   return _currentS;
 }
-
-
-void MetroContact::testReadMeas()
-{
-  static int v = 0;
-  static int h = 0;
-  static uint s = 0;
-  v++;
-  h++;
-  s += 94;
-  _currentV = v;
-  _currentH = h;
-  _currentS = s;
-}
-
-
 

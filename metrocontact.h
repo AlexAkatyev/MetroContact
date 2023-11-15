@@ -56,10 +56,6 @@ private:
   double _currentV;
   double _currentH;
   unsigned int _currentS;
-
-
-  void testReadMeas();
-
 };
 
 #endif // METROCONTACT_H
