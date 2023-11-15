@@ -91,17 +91,15 @@ void MetroContact::saveProtocol(QString urlName)
 
 void MetroContact::saveMeasure(int picket, bool direction, float length, float v, float h)
 {
-  static float prevlen = -1;
-  float rLen = round(4 * length)/4;
-  float len = abs(rLen - length);
-  if (prevlen != rLen
-      && len < 0.15)
+  static float prevPosition = -1;
+  float currentPosition = round(4 * length)/4;
+  if (prevPosition != currentPosition)
   {
-    _protokol.push_back(Measure(picket, direction, rLen, v, h));
+    _protokol.push_back(Measure(picket, direction, currentPosition, v, h));
     Logger::GetInstance()->SetTimeLabel();
     Logger::GetInstance()->WriteLnLog(measureToString(*(--_protokol.end())));
   }
-  prevlen = rLen;
+  prevPosition = currentPosition;
 }
 
 
@@ -117,7 +115,7 @@ void MetroContact::saveProtokolHeader(QFile* file)
 void MetroContact::saveProtokolRecord(QFile* file, Measure measure)
 {
   file->write(measureToString(measure).toLatin1()
-              + ";\n");
+              + "\n");
 }
 
 
