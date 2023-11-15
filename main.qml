@@ -61,7 +61,6 @@ Window {
     property bool measuring: false
     onMeasuringChanged: {
         btRecord.text = getNameCommandRecord();
-        recordIndicator.visible = measuring;
         itPicket.enabled = measuring;
         itPickCaption.enabled = !measuring;
         if (!measuring)
@@ -214,7 +213,26 @@ Window {
             inputVertical.mess = mcRoutine.currentV();
             inputHorizontal.mess = mcRoutine.currentH();
             currentDiscret = mcRoutine.currentS();
+            if (mcRoutine.dataReceived())
+                receiveIndicator.color = "light yellow";
+            else
+                receiveIndicator.color = "black";
+            if (mcRoutine.measKeeped())
+            {
+                keepIndicator.color = "blue";
+                keepIndTimer.start();
+            }
         }
+    }
+
+
+    Timer
+    {
+        id: keepIndTimer
+        repeat: false
+        running: false
+        interval: 200
+        onTriggered: keepIndicator.color = "white"
     }
 
 
@@ -349,20 +367,39 @@ Window {
                 anchors.horizontalCenter: gaugeHorizontal.horizontalCenter
             }
             Rectangle {
-                id: recordIndicator
-                color: "light grey"
+                id: receiveIndicator
+                color: "light yellow"
                 anchors.top: parent.top
                 anchors.horizontalCenter: parent.horizontalCenter
-                height: gaugeVertical.height / 3
+                height: 40
                 width: height
-                visible: measuring
-                radius: height / 4
-                Text {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: pause ? "    Запись\nостановлена" : "  Идёт\nзапись"
-                    font.pixelSize: getPicketHeigth() / 4
-                }
+                radius: height / 2
+                border.color: "black"
+                border.width: 2
+            }
+            Rectangle {
+                id: recordIndicator
+                color: measuring ? (pause ? "red" : "green") : "light grey"
+                anchors.top: parent.top
+                anchors.right: receiveIndicator.left
+                anchors.rightMargin: receiveIndicator.border.width
+                height: receiveIndicator.height
+                width: receiveIndicator.width
+                radius: receiveIndicator.radius
+                border.color: receiveIndicator.border.color
+                border.width: receiveIndicator.border.width
+            }
+            Rectangle {
+                id: keepIndicator
+                color: "white"
+                anchors.top: parent.top
+                anchors.left: receiveIndicator.right
+                anchors.leftMargin: receiveIndicator.border.width
+                height: receiveIndicator.height
+                width: receiveIndicator.width
+                radius: receiveIndicator.radius
+                border.color: receiveIndicator.border.color
+                border.width: receiveIndicator.border.width
             }
         } // Item itGauge
 

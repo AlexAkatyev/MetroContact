@@ -14,6 +14,7 @@ public:
 
 signals:
   void sigCurrentMeas(std::vector<QVariant>);
+  void sigDataReceived();
 
  protected:
   std::vector<QVariant> _result;

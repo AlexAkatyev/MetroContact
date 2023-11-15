@@ -159,6 +159,7 @@ void UsbMetroMeasSystem::readMeas()
                                         + QString::number(s, 10).toLatin1()
                                         + ";");
       _saveToLog = !_saveToLog;
+      emit sigDataReceived();
     }
     emit sigCurrentMeas(_result); // отправляю результат в обработку
     input.remove(0, i + MessageLength()); // убираю из буфера прочитанный кадр

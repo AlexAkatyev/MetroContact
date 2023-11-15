@@ -34,6 +34,8 @@ MetroContact::MetroContact(QObject *parent) : QObject(parent)
   , _currentV(0)
   , _currentH(0)
   , _currentS(0)
+  , _dataReceived(false)
+  , _measKeeped(false)
 {
   Logger::GetInstance(this)->WriteLnLog("Запуск программы MetroContact");
   _protokol.clear();
@@ -60,6 +62,10 @@ void MetroContact::measPick()
     {
       _measurement = *detects.begin();
       connect(_measurement, &MeasSystem::sigCurrentMeas, this, &MetroContact::indicateCurrentMeas);
+      connect(_measurement, &MeasSystem::sigDataReceived, this, [=]()
+      {
+        _dataReceived = !_dataReceived;
+      });
       _measurement->SetEnable(true);
     }
   }
@@ -91,6 +97,7 @@ void MetroContact::saveMeasure(int picket, bool direction, float length, float v
   if (prevPosition != currentPosition)
   {
     _protokol.push_back(Measure(picket, direction, currentPosition, v, h));
+    _measKeeped = true;
     Logger::GetInstance()->SetTimeLabel();
     Logger::GetInstance()->WriteLnLog(measureToString(*(--_protokol.end())));
   }
@@ -137,5 +144,19 @@ double MetroContact::currentH() const
 int MetroContact::currentS() const
 {
   return _currentS;
+}
+
+
+bool MetroContact::dataReceived() const
+{
+  return _dataReceived;
+}
+
+
+bool MetroContact::measKeeped()
+{
+  bool result = _measKeeped;
+  _measKeeped = false;
+  return result;
 }
 
