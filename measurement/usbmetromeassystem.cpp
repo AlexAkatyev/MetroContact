@@ -4,6 +4,8 @@
 #include "usbmetromeassystem.h"
 #include "Logger/logger.h"
 
+const int WATCH_DOG_PERIOD = 500;
+
 
 UsbMetroMeasSystem::UsbMetroMeasSystem(QString portName, QObject* parent)
   : MeasSystem(parent)
@@ -14,9 +16,11 @@ UsbMetroMeasSystem::UsbMetroMeasSystem(QString portName, QObject* parent)
   _port = new QSerialPort(_portInfo, this);
   connect(_logTimer, &QTimer::timeout, this, [=]()
   {
+    if (_saveToLog)
+      Logger::GetInstance()->WriteLnLog(QString("За последние %1 мс данные в порт не приходили").arg(WATCH_DOG_PERIOD));
     _saveToLog = true;
   });
-  _logTimer->start(500);
+  _logTimer->start(WATCH_DOG_PERIOD);
 }
 
 
