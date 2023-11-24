@@ -36,6 +36,8 @@ public:
   Q_INVOKABLE int currentS() const;
   Q_INVOKABLE bool dataReceived() const;
   Q_INVOKABLE bool measKeeped();
+  Q_INVOKABLE bool workV();
+  Q_INVOKABLE bool workH();
 
 public slots:
   void saveProtocol(QString urlName);
@@ -61,6 +63,8 @@ private:
 
   bool _dataReceived;
   bool _measKeeped;
+  bool _workV;
+  bool _workH;
 };
 
 #endif // METROCONTACT_H

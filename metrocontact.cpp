@@ -9,9 +9,11 @@
 #include "inisettings.h"
 #include "Logger/logger.h"
 
-int IVERT = 0;
-int IHOR = 1;
-int ISTEP = 2;
+const int IWVERT = 0;
+const int IVERT = 1;
+const int IWHOR = 2;
+const int IHOR = 3;
+const int ISTEP = 4;
 
 
 QString measureToString(Measure measure)
@@ -36,6 +38,8 @@ MetroContact::MetroContact(QObject *parent) : QObject(parent)
   , _currentS(0)
   , _dataReceived(false)
   , _measKeeped(false)
+  , _workV(false)
+  , _workH(false)
 {
   Logger::GetInstance(this)->WriteLnLog("Запуск программы MetroContact");
   _protokol.clear();
@@ -123,7 +127,9 @@ void MetroContact::saveProtokolRecord(QFile* file, Measure measure)
 
 void MetroContact::indicateCurrentMeas(std::vector<QVariant> meas)
 {
+  _workV = meas.at(IWVERT).toBool();
   _currentV = meas.at(IVERT).toDouble();
+  _workH = meas.at(IWHOR).toBool();
   _currentH = meas.at(IHOR).toDouble();
   _currentS = meas.at(ISTEP).toInt();
 }
@@ -158,5 +164,17 @@ bool MetroContact::measKeeped()
   bool result = _measKeeped;
   _measKeeped = false;
   return result;
+}
+
+
+bool MetroContact::workV()
+{
+  return _workV;
+}
+
+
+bool MetroContact::workH()
+{
+  return _workH;
 }
 

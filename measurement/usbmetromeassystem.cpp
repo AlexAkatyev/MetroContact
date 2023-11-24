@@ -5,6 +5,7 @@
 #include "Logger/logger.h"
 
 const int WATCH_DOG_PERIOD = 500;
+const int BAD_MEASURE = 0x0ABC;
 
 
 UsbMetroMeasSystem::UsbMetroMeasSystem(QString portName, QObject* parent)
@@ -137,10 +138,12 @@ void UsbMetroMeasSystem::readMeas()
     int v = (static_cast<unsigned char>(input.at(i + 4)) * 256) + static_cast<unsigned char>(input.at(i + 5));
     if (v > 0x7FFF)
       v -= 0x10000;
+    _result.push_back(v != BAD_MEASURE); // вертикаль истинна
     _result.push_back(static_cast<double>(v) / 100); // вертикаль
     int h = (static_cast<unsigned char>(input.at(i + 6)) * 256) + static_cast<unsigned char>(input.at(i + 7));
     if (h > 0x7FFF)
       h -= 0x10000;
+    _result.push_back(h != BAD_MEASURE); // горизонталь истинна
     _result.push_back(static_cast<double>(h) / 100); // горизонталь
     int s = (static_cast<unsigned char>(input.at(i + 8))) * 256 * 256 * 256;
     s += static_cast<unsigned char>(input.at(i + 9)) * 256 * 256;

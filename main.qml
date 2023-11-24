@@ -222,6 +222,8 @@ Window {
                 keepIndicator.color = "blue";
                 keepIndTimer.start();
             }
+            inputVertical.blDetect1WorkInput = mcRoutine.workV();
+            inputHorizontal.blDetect1WorkInput = mcRoutine.workH();
         }
     }
 
@@ -243,6 +245,7 @@ Window {
         accuracy: 1
         lowLimit: -6
         highLimit: 6
+        blDetect1EnableInput: true
     }
 
     InputIndicator {
@@ -252,6 +255,7 @@ Window {
         accuracy: inputVertical.accuracy
         lowLimit: -8
         highLimit: 8
+        blDetect1EnableInput: true
     }
 
     TabBar {
@@ -370,17 +374,32 @@ Window {
                 id: receiveIndicator
                 color: "light yellow"
                 anchors.top: parent.top
+                anchors.topMargin: height/2
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 40
                 width: height
                 radius: height / 2
                 border.color: "black"
                 border.width: 2
+                ToolTip
+                {
+                    id: ttIReceiveIndicator
+                    text: "Связь с оборудованием"
+                }
+                MouseArea
+                {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: ttIReceiveIndicator.visible = true
+                    onExited:  ttIReceiveIndicator.visible = false
+
+                }
             }
             Rectangle {
                 id: recordIndicator
                 color: measuring ? (pause ? "red" : "green") : "light grey"
                 anchors.top: parent.top
+                anchors.topMargin: receiveIndicator.anchors.topMargin
                 anchors.right: receiveIndicator.left
                 anchors.rightMargin: receiveIndicator.border.width
                 height: receiveIndicator.height
@@ -388,11 +407,25 @@ Window {
                 radius: receiveIndicator.radius
                 border.color: receiveIndicator.border.color
                 border.width: receiveIndicator.border.width
+                ToolTip
+                {
+                    id: ttIRecordIndicator
+                    text: "Режим работы"
+                }
+                MouseArea
+                {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: ttIRecordIndicator.visible = true
+                    onExited:  ttIRecordIndicator.visible = false
+
+                }
             }
             Rectangle {
                 id: keepIndicator
                 color: "white"
                 anchors.top: parent.top
+                anchors.topMargin: receiveIndicator.anchors.topMargin
                 anchors.left: receiveIndicator.right
                 anchors.leftMargin: receiveIndicator.border.width
                 height: receiveIndicator.height
@@ -400,6 +433,19 @@ Window {
                 radius: receiveIndicator.radius
                 border.color: receiveIndicator.border.color
                 border.width: receiveIndicator.border.width
+                ToolTip
+                {
+                    id: ttIKeepIndicator
+                    text: "Запись показаний"
+                }
+                MouseArea
+                {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onEntered: ttIKeepIndicator.visible = true
+                    onExited:  ttIKeepIndicator.visible = false
+
+                }
             }
         } // Item itGauge
 
