@@ -27,7 +27,7 @@ Item
             columns: 2
             spacing: 2
             Text {
-                text: qsTr("\nВерхнее предельное отклонение   ")
+                text: "\nВерхнее предельное отклонение   "
             }
             TextField {
                 id: tfHiLimit
@@ -42,7 +42,7 @@ Item
                 }
             }
             Text {
-                text: qsTr("\nНижнее предельное отклонение   ")
+                text: "\nНижнее предельное отклонение   "
             }
             TextField {
                 id: tfLoLimit
@@ -58,10 +58,10 @@ Item
                 }
             }
             Text {
-                text: qsTr("\nЗвуковое оповещение   ")
+                text: "\nЗвуковое оповещение   "
             }
             ComboBox {
-                model: [qsTr("Выключено"), qsTr("Короткое"), qsTr("Длинное")]
+                model: ["Выключено", "Короткое", "Длинное"]
                 width: tfHiLimit.width
                 onCurrentIndexChanged:
                 {
