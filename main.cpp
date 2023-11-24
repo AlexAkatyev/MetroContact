@@ -25,19 +25,19 @@ int main(int argc, char *argv[])
 
   // Проверка на наличие запущенных программ, работающих с измерителями микроперемещений
 
-  QSystemSemaphore semaphore("<imp>", 1);  // создаём семафор
+  QSystemSemaphore semaphore("<metrocontact.micromech>", 1);  // создаём семафор
   semaphore.acquire(); // Поднимаем семафор, запрещая другим экземплярам работать с разделяемой памятью
 
 #ifndef Q_OS_WIN32
   // в linux/unix разделяемая память не освобождается при аварийном завершении приложения,
   // поэтому необходимо избавиться от данного мусора
-  QSharedMemory nix_fix_shared_memory("<memory_imp>");
+  QSharedMemory nix_fix_shared_memory("<memory_metrocontact.micromech>");
   if(nix_fix_shared_memory.attach()){
       nix_fix_shared_memory.detach();
   }
 #endif
 
-  QSharedMemory sharedMemory("<memory_imp>");  // Создаём экземпляр разделяемой памяти
+  QSharedMemory sharedMemory("<memory_metrocontact.micromech>");  // Создаём экземпляр разделяемой памяти
   bool is_running;            // переменную для проверки уже запущенного приложения
   if (sharedMemory.attach())
   { // пытаемся присоединить экземпляр разделяемой памяти
