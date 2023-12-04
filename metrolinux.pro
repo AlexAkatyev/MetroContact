@@ -1,5 +1,7 @@
 QT += quick serialport quickcontrols2
 
+TARGET = metrocontact
+
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
