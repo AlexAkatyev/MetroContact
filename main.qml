@@ -4,6 +4,7 @@ import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import QtMultimedia 5.5
 import QtQuick.Dialogs 1.2
+import Qt.labs.settings 1.0
 
 Window {
     id: mainWindow
@@ -19,9 +20,16 @@ Window {
 
     onSceneGraphInitialized: showMaximized();
 
+    Settings
+    {
+        id: settingsValues
+        fileName: "metrocontact.ini"
+        property real stepLength: 0.00075
+    }
+
     property int  gaugeMargin: 10
     property string dPath: ""
-    property real stepLength: 0.00075
+    property real stepLength: settingsValues.stepLength // 0.00075
     property int currentPicket: 0
     onCurrentPicketChanged: {
         tLength.text = getLengthDisplay();
