@@ -29,6 +29,7 @@ public:
 
 protected:
   void readMeas();
+  void sendINIT();
 
 private:
   QSerialPortInfo _portInfo;

@@ -6,6 +6,7 @@
 
 const int WATCH_DOG_PERIOD = 500;
 const int BAD_MEASURE = 0x0ABC;
+const int INIT_PERIOD = 5000;
 
 
 UsbMetroMeasSystem::UsbMetroMeasSystem(QString portName, QObject* parent)
@@ -22,6 +23,24 @@ UsbMetroMeasSystem::UsbMetroMeasSystem(QString portName, QObject* parent)
     _saveToLog = true;
   });
   _logTimer->start(WATCH_DOG_PERIOD);
+
+  QTimer* initSender = new QTimer(this);
+  connect(initSender, &QTimer::timeout, this, &UsbMetroMeasSystem::sendINIT);
+  initSender->start(INIT_PERIOD);
+
+  sendINIT();
+}
+
+
+void UsbMetroMeasSystem::sendINIT()
+{
+  if (_port)
+  {
+    QByteArray data("INIT");
+    _port->write(data);
+    Logger::GetInstance()->WriteLog("Send: ");
+    Logger::GetInstance()->WriteBytes(data);
+  }
 }
 
 

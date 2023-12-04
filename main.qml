@@ -15,7 +15,7 @@ Window {
     width: 1500//(2500 < Screen.desktopAvailableWidth) ? 1500 : Screen.desktopAvailableWidth
     height: 1000//Screen.desktopAvailableHeight
     visible: true
-    title: "Катучий шаблон М-009 v1.2"
+    title: "Катучий шаблон М-009 v1.2.1"
 
     onSceneGraphInitialized: showMaximized();
 
