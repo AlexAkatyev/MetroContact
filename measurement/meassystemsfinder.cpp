@@ -6,6 +6,8 @@
 #include "Logger/logger.h"
 
 
+const int WAIT_FOR_READY_READ = 3 * UsbMetroMeasSystem::Period() + 1000;
+
 MeasSystemsFinder::MeasSystemsFinder(QObject *parent)
   : QObject(parent)
   , _parent(parent)
@@ -63,8 +65,8 @@ void MeasSystemsFinder::startAnalizePort()
 
     (*_itMMS).second->write("0");
     (*_itMMS).second->flush();
-    (*_itMMS).second->waitForReadyRead(9000);
-    QTimer::singleShot(3 * UsbMetroMeasSystem::Period() + 1000,
+    (*_itMMS).second->waitForReadyRead(WAIT_FOR_READY_READ);
+    QTimer::singleShot(WAIT_FOR_READY_READ,
                        this,
                        &MeasSystemsFinder::finishAnalizePort);
 

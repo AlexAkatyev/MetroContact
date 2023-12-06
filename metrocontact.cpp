@@ -47,11 +47,10 @@ MetroContact::MetroContact(QObject *parent) : QObject(parent)
           &MeasSystemsFinder::Ready,
           this,
           &MetroContact::measPick);
-  measFind();
 }
 
 
-void MetroContact::measFind()
+void MetroContact::MeasFind()
 {
   _finder->Find();
 }

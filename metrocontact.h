@@ -39,12 +39,13 @@ public:
   Q_INVOKABLE bool workV();
   Q_INVOKABLE bool workH();
 
+  void MeasFind();
+
 public slots:
   void saveProtocol(QString urlName);
   void saveMeasure(int picket, bool direction, float length, float v, float h);
 
 private:
-  void measFind();
   void measPick();
   void saveProtokolHeader(QFile* file);
   void saveProtokolRecord(QFile* file, Measure measure);

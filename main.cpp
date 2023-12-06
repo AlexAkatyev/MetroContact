@@ -76,5 +76,7 @@ int main(int argc, char *argv[])
 
   engine.load(url);
 
+  mcroutine.MeasFind();
+
   return app.exec();
 }
