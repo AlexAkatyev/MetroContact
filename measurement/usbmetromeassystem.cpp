@@ -27,14 +27,13 @@ UsbMetroMeasSystem::UsbMetroMeasSystem(QString portName, QObject* parent)
   QTimer* initSender = new QTimer(this);
   connect(initSender, &QTimer::timeout, this, &UsbMetroMeasSystem::sendINIT);
   initSender->start(INIT_PERIOD);
-
-  sendINIT();
 }
 
 
 void UsbMetroMeasSystem::sendINIT()
 {
-  if (_port)
+  if (_port
+      && _port->isOpen())
   {
     QByteArray data("INIT");
     _port->write(data);
@@ -121,7 +120,7 @@ bool UsbMetroMeasSystem::SetEnable(bool enable)
         _port->setReadBufferSize(UsbMetroMeasSystem::BuferSize());
         _port->setFlowControl(UsbMetroMeasSystem::FlowControl());
 
-        _port->write("0");
+        sendINIT();
         _port->flush();
         connect(_port, &QSerialPort::readyRead, this, &UsbMetroMeasSystem::readMeas);
       }
