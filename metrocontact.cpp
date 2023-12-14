@@ -15,6 +15,8 @@ const int IWHOR = 2;
 const int IHOR = 3;
 const int ISTEP = 4;
 
+const int WDT_INTERVAL = 500;
+
 
 QString measureToString(Measure measure)
 {
@@ -36,10 +38,11 @@ MetroContact::MetroContact(QObject *parent) : QObject(parent)
   , _currentV(0)
   , _currentH(0)
   , _currentS(0)
-  , _dataReceived(false)
-  , _measKeeped(false)
+  , _dataReceivedFlipFlop(false)
+  , _dataReceivedState(false)
   , _workV(false)
   , _workH(false)
+  , _wdt(new QTimer(this))
 {
   Logger::GetInstance(this)->WriteLnLog("Запуск программы MetroContact");
   _protokol.clear();
@@ -47,6 +50,13 @@ MetroContact::MetroContact(QObject *parent) : QObject(parent)
           &MeasSystemsFinder::Ready,
           this,
           &MetroContact::measPick);
+  connect(_wdt, &QTimer::timeout, this, [=]()
+  {
+    _dataReceivedState = false;
+    Logger::GetInstance()->WriteLnLog("Сработал WDT");
+  });
+  _wdt->setInterval(WDT_INTERVAL);
+  _wdt->start();
 }
 
 
@@ -67,7 +77,7 @@ void MetroContact::measPick()
       connect(_measurement, &MeasSystem::sigCurrentMeas, this, &MetroContact::indicateCurrentMeas);
       connect(_measurement, &MeasSystem::sigDataReceived, this, [=]()
       {
-        _dataReceived = !_dataReceived;
+        _dataReceivedFlipFlop = !_dataReceivedFlipFlop;
       });
       _measurement->SetEnable(true);
     }
@@ -131,6 +141,8 @@ void MetroContact::indicateCurrentMeas(std::vector<QVariant> meas)
   _workH = meas.at(IWHOR).toBool();
   _currentH = meas.at(IHOR).toDouble();
   _currentS = meas.at(ISTEP).toInt();
+  _dataReceivedState = true;
+  _wdt->start();
 }
 
 
@@ -154,7 +166,7 @@ int MetroContact::currentS() const
 
 bool MetroContact::dataReceived() const
 {
-  return _dataReceived;
+  return _dataReceivedFlipFlop;
 }
 
 
@@ -168,12 +180,12 @@ bool MetroContact::measKeeped()
 
 bool MetroContact::workV()
 {
-  return _workV;
+  return _workV && _dataReceivedState;
 }
 
 
 bool MetroContact::workH()
 {
-  return _workH;
+  return _workH && _dataReceivedState;
 }
 

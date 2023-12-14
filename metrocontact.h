@@ -62,10 +62,13 @@ private:
   double _currentH;
   unsigned int _currentS;
 
-  bool _dataReceived;
+  bool _dataReceivedFlipFlop;
+  bool _dataReceivedState;
   bool _measKeeped;
   bool _workV;
   bool _workH;
+
+  QTimer* _wdt;
 };
 
 #endif // METROCONTACT_H
