@@ -63,9 +63,12 @@ void MeasSystemsFinder::startAnalizePort()
     (*_itMMS).second->setFlowControl(UsbMetroMeasSystem::FlowControl());
 
 
-    (*_itMMS).second->write("0");
+    QByteArray data = MeasSystem::GetStart();
+    (*_itMMS).second->write(data);
     (*_itMMS).second->flush();
     (*_itMMS).second->waitForReadyRead(WAIT_FOR_READY_READ);
+    Logger::GetInstance()->WriteLog("Send: ");
+    Logger::GetInstance()->WriteBytes(data);
     QTimer::singleShot(WAIT_FOR_READY_READ,
                        this,
                        &MeasSystemsFinder::finishAnalizePort);

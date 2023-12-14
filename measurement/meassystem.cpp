@@ -12,3 +12,9 @@ std::vector<QVariant> MeasSystem::CurrentMeas()
   return _result;
 }
 
+
+QByteArray MeasSystem::GetStart()
+{
+  return "INIT";
+}
+

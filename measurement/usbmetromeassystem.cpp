@@ -35,7 +35,7 @@ void UsbMetroMeasSystem::sendINIT()
   if (_port
       && _port->isOpen())
   {
-    QByteArray data("INIT");
+    QByteArray data = MeasSystem::GetStart();
     _port->write(data);
     Logger::GetInstance()->WriteLog("Send: ");
     Logger::GetInstance()->WriteBytes(data);
