@@ -54,7 +54,7 @@ MetroContact::MetroContact(QObject *parent) : QObject(parent)
   connect(_wdt, &QTimer::timeout, this, [=]()
   {
     _dataReceivedState = false;
-    Logger::GetInstance()->WriteLnLog("Сработал WDT");
+    Logger::GetInstance()->WriteLnLog("Сработал WDT : " + Logger::CurrentTimeToLog());
   });
   _wdt->setInterval(WDT_INTERVAL);
   _wdt->start();

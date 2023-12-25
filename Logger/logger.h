@@ -14,6 +14,7 @@ public:
   void WriteLnLog(QString input = "");
   void WriteBytes(QByteArray input = "");
   void SetTimeLabel();
+  static QString CurrentTimeToLog();
 
 protected:
   explicit Logger(QObject *parent = nullptr);

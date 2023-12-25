@@ -6,7 +6,7 @@
 #include "logger.h"
 
 
-QString currentTimeToLog()
+QString Logger::CurrentTimeToLog()
 {
   return QDateTime::currentDateTime().toString("dd.MM.yyyy HH:mm:ss");
 }
@@ -17,7 +17,7 @@ Logger::Logger(QObject *parent)
   , _log(new QFile("metrocontact.log", parent))
 {
   _log->open(QIODevice::WriteOnly);
-  WriteLnLog("Начало записи " + currentTimeToLog());
+  WriteLnLog("Начало записи " + CurrentTimeToLog());
 }
 
 
@@ -66,5 +66,5 @@ void Logger::WriteBytes(QByteArray input)
 
 void Logger::SetTimeLabel()
 {
-  WriteLnLog("Время " + currentTimeToLog());
+  WriteLnLog("Время " + CurrentTimeToLog());
 }
