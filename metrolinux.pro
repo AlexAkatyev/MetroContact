@@ -44,3 +44,5 @@ HEADERS += \
     measurement/meassystemsfinder.h \
     measurement/usbmetromeassystem.h \
     metrocontact.h
+
+LIBS += -lkernel32

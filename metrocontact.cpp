@@ -1,3 +1,4 @@
+#include <windows.h>
 #include <cmath>
 #include <QVariant>
 #include <QFile>
@@ -16,6 +17,7 @@ const int IHOR = 3;
 const int ISTEP = 4;
 
 const int WDT_INTERVAL = 500;
+const int NGIBERNATION_PERIOD = 1000;
 
 
 QString measureToString(Measure measure)
@@ -58,6 +60,13 @@ MetroContact::MetroContact(QObject *parent) : QObject(parent)
   });
   _wdt->setInterval(WDT_INTERVAL);
   _wdt->start();
+
+  QTimer* notGibernation = new QTimer(this);
+  connect(notGibernation, &QTimer::timeout, this, [=]()
+  {
+    SetThreadExecutionState(0x80000000 | 0x00000001); // ES_CONTINUOUS | ES_SYSTEM_REQUIRED
+  });
+  notGibernation->start(NGIBERNATION_PERIOD);
 }
 
 
