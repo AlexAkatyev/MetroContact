@@ -465,11 +465,14 @@ Window {
             Button {
                 id: btRecord
                 anchors.bottom: parent.bottom
+                anchors.bottomMargin: 5
                 anchors.left: parent.left
+                anchors.leftMargin: 5
                 anchors.right: parent.right
+                anchors.rightMargin: 5
                 height: itPicket.height
                 text: getNameCommandRecord()
-                font.pixelSize: tLabel.font.pixelSize
+                font.pixelSize: height * 0.8
                 onClicked: measuring = !measuring;
             }
             Item {

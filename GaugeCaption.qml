@@ -28,6 +28,7 @@ Item
             spacing: 2
             Text {
                 text: "\nВерхнее предельное отклонение   "
+                font.pixelSize: tfHiLimit.font.pixelSize
             }
             TextField {
                 id: tfHiLimit
@@ -35,7 +36,7 @@ Item
                 text: inputIndicator.highLimit
                 validator: IntValidator{bottom: -20; top: 20;}
                 inputMethodHints: Qt.ImhDigitsOnly
-                font.pixelSize: 12
+                font.pixelSize: 16
                 onEditingFinished: {
                     var hLimit = text;
                     inputIndicator.highLimit = hLimit;
@@ -43,6 +44,7 @@ Item
             }
             Text {
                 text: "\nНижнее предельное отклонение   "
+                font.pixelSize: tfHiLimit.font.pixelSize
             }
             TextField {
                 id: tfLoLimit
@@ -59,6 +61,7 @@ Item
             }
             Text {
                 text: "\nЗвуковое оповещение   "
+                font.pixelSize: tfHiLimit.font.pixelSize
             }
             ComboBox {
                 model: ["Выключено", "Короткое", "Длинное"]
