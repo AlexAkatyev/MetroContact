@@ -6,6 +6,7 @@
         <file>Marker.qml</file>
         <file>GaugeCaption.qml</file>
         <file>1kHz_44100Hz_16bit_05sec.wav</file>
-        <file>icons8-journal-80.png</file>
+        <file>icons8-meter-100.png</file>
+        <file>shutdown_4345.png</file>
     </qresource>
 </RCC>

@@ -8,9 +8,6 @@ import Qt.labs.settings 1.0
 
 Window {
     id: mainWindow
-//    flags: Qt.FramelessWindowHint |
-//           Qt.WindowMinimizeButtonHint |
-//           Qt.Window
     x: 0
     y: 0
     width: 1500//(2500 < Screen.desktopAvailableWidth) ? 1500 : Screen.desktopAvailableWidth
@@ -527,6 +524,29 @@ Window {
                         popup.font.pixelSize: txStartPicket.font.pixelSize
                     }
                 }
+            }
+            Button
+            {
+                id: offDevice
+                anchors.left: parent.left
+                anchors.leftMargin: 5
+                anchors.bottom: itPickCaption.top
+                anchors.bottomMargin: 5
+                height: parent.height * 0.07
+                width: height
+                icon.source: "shutdown_4345.png"
+                icon.height: height
+                icon.width: width
+                icon.color: "transparent"
+            }
+            Text
+            {
+                id: connectPort
+                text: "-"
+                font.pixelSize: getPicketHeigth() / 4
+                anchors.left: offDevice.right
+                anchors.leftMargin: 10
+                anchors.verticalCenter: offDevice.verticalCenter
             }
             GaugeCaption {
                 id: vCaption
