@@ -26,6 +26,8 @@ SOURCES += \
 
 RESOURCES += qml.qrc
 
+RC_FILE = application.rc
+
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 
@@ -46,3 +48,6 @@ HEADERS += \
     metrocontact.h
 
 LIBS += -lkernel32
+
+DISTFILES += \
+    application.rc

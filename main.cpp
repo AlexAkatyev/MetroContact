@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
       return 1; // Программу не запускаем
   }
 
-  app.setWindowIcon(QIcon(":icons8-meter-100.png"));
+  app.setWindowIcon(QIcon(":ruler_84678.ico"));
 
   QQmlApplicationEngine engine;
   const QUrl url(QStringLiteral("qrc:/main.qml"));
