@@ -18,3 +18,8 @@ QByteArray MeasSystem::GetStart()
   return "INIT";
 }
 
+
+QString MeasSystem::PortName()
+{
+    return "Порт не определён";
+}

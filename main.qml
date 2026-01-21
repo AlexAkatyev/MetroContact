@@ -8,15 +8,12 @@ import Qt.labs.settings 1.0
 
 Window {
     id: mainWindow
-//    flags: Qt.FramelessWindowHint |
-//           Qt.WindowMinimizeButtonHint |
-//           Qt.Window
     x: 0
     y: 0
     width: 1500//(2500 < Screen.desktopAvailableWidth) ? 1500 : Screen.desktopAvailableWidth
     height: 1000//Screen.desktopAvailableHeight
     visible: true
-    title: "Катучий шаблон М-009 v1.2.4"
+    title: "Катучий шаблон М-009  v1.2.5"
 
     onSceneGraphInitialized: showMaximized();
 
@@ -233,6 +230,7 @@ Window {
             }
             inputVertical.blDetect1WorkInput = mcRoutine.workV();
             inputHorizontal.blDetect1WorkInput = mcRoutine.workH();
+            connectPort.text = mcRoutine.activePort();
         }
     }
 
@@ -465,11 +463,14 @@ Window {
             Button {
                 id: btRecord
                 anchors.bottom: parent.bottom
+                anchors.bottomMargin: 5
                 anchors.left: parent.left
+                anchors.leftMargin: 5
                 anchors.right: parent.right
+                anchors.rightMargin: 5
                 height: itPicket.height
                 text: getNameCommandRecord()
-                font.pixelSize: tLabel.font.pixelSize
+                font.pixelSize: height * 0.8
                 onClicked: measuring = !measuring;
             }
             Item {
@@ -524,6 +525,30 @@ Window {
                         popup.font.pixelSize: txStartPicket.font.pixelSize
                     }
                 }
+            }
+            Button
+            {
+                id: offDevice
+                anchors.left: parent.left
+                anchors.leftMargin: 5
+                anchors.bottom: itPickCaption.top
+                anchors.bottomMargin: 5
+                height: parent.height * 0.07
+                width: height
+                icon.source: "shutdown_4345.png"
+                icon.height: height
+                icon.width: width
+                icon.color: "transparent"
+                onReleased: mcRoutine.connectDevice();
+            }
+            Text
+            {
+                id: connectPort
+                text: "-"
+                font.pixelSize: getPicketHeigth() / 4
+                anchors.left: offDevice.right
+                anchors.leftMargin: 10
+                anchors.verticalCenter: offDevice.verticalCenter
             }
             GaugeCaption {
                 id: vCaption

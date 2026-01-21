@@ -187,3 +187,8 @@ void UsbMetroMeasSystem::readMeas()
   }
 }
 
+
+QString UsbMetroMeasSystem::PortName()
+{
+    return _portInfo.portName();
+}

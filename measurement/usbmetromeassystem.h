@@ -15,6 +15,7 @@ public:
   UsbMetroMeasSystem(QString portName, QObject* parent = nullptr);
 
   virtual bool SetEnable(bool enable) override;
+  virtual QString PortName() override;
 
   static QSerialPort::BaudRate BaudRate();
   static QSerialPort::Direction Direction();

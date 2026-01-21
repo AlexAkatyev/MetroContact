@@ -38,12 +38,14 @@ public:
   Q_INVOKABLE bool measKeeped();
   Q_INVOKABLE bool workV();
   Q_INVOKABLE bool workH();
+    Q_INVOKABLE QString activePort();
 
   void MeasFind();
 
 public slots:
   void saveProtocol(QString urlName);
   void saveMeasure(int picket, bool direction, float length, float v, float h);
+  void connectDevice();
 
 private:
   void measPick();

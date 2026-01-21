@@ -199,3 +199,29 @@ bool MetroContact::workH()
   return _workH && _dataReceivedState;
 }
 
+
+void MetroContact::connectDevice()
+{
+    if (_measurement)
+    {
+        _measurement->deleteLater();
+        _measurement = nullptr;
+    }
+    else
+    {
+        MeasFind();
+    }
+}
+
+
+QString MetroContact::activePort()
+{
+    if (_measurement)
+    {
+        return _measurement->PortName();
+    }
+    else
+    {
+        return "Нет соединения";
+    }
+}
