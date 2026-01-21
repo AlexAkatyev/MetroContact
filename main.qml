@@ -230,6 +230,7 @@ Window {
             }
             inputVertical.blDetect1WorkInput = mcRoutine.workV();
             inputHorizontal.blDetect1WorkInput = mcRoutine.workH();
+            connectPort.text = mcRoutine.activePort();
         }
     }
 
@@ -538,6 +539,7 @@ Window {
                 icon.height: height
                 icon.width: width
                 icon.color: "transparent"
+                onReleased: mcRoutine.connectDevice();
             }
             Text
             {
