@@ -55,6 +55,7 @@ Window {
     }
     property int prevSavedDiscret: 0
     property int startDiscret: 0
+    property real startLength: 0
     property real currentLength: getLength()
     onCurrentLengthChanged: {
         tLength.text = getLengthDisplay();
@@ -97,7 +98,8 @@ Window {
     }
 
     function getLength() {
-        var result = (currentDiscret - startDiscret) * stepLength;
+        var result = (currentDiscret - startDiscret) * stepLength
+                     + startLength;
         return result > 0 ? result : -result;
     }
 
@@ -332,6 +334,8 @@ Window {
                         numberMeasFromPicket = 0;
                         prevSavedDiscret = currentDiscret;
                         startDiscret = currentDiscret;
+                        startLength = 0;
+                        startPicketLength.text = startLength;
                     }
                 }
                 Button {
@@ -478,9 +482,10 @@ Window {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.bottom: btRecord.top
+                anchors.bottomMargin: 20
                 height: itPicket.height
                 Grid {
-                    rows: 1
+                    rows: 2
                     columns: 4
                     spacing: 10
                     anchors.verticalCenter: parent.verticalCenter
@@ -500,6 +505,22 @@ Window {
                             var picket = text;
                             currentPicket = picket;
                             startDiscret = currentDiscret;
+                        }
+                    }
+                    Text {
+                        id: txStartPicketLength
+                        text: "Стартовое расстояние от пикета, м:"
+                        font.pixelSize: getPicketHeigth() / 4
+                    }
+                    TextField {
+                        id: startPicketLength
+                        placeholderText: "0"
+                        inputMethodHints: Qt.ImhFormattedNumbersOnly
+                        font.pixelSize: txStartPicket.font.pixelSize
+                        onEditingFinished:
+                        {
+                            startLength = parseFloat(text);
+                            tLength.text = getLengthDisplay();
                         }
                     }
                     Text {
@@ -532,7 +553,7 @@ Window {
                 anchors.left: parent.left
                 anchors.leftMargin: 5
                 anchors.bottom: itPickCaption.top
-                anchors.bottomMargin: 5
+                anchors.bottomMargin: 20
                 height: parent.height * 0.07
                 width: height
                 icon.source: "shutdown_4345.png"
